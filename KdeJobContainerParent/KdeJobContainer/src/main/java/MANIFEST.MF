@@ -9,6 +9,7 @@ Class-Path: lib/quartz-all-2.1.7.jar
  lib/log4j-1.2.16.jar lib/quartz-all-2.1.7.jar 
  lib/slf4j-api-1.6.1.jar lib/slf4j-log4j12-1.6.1.jar 
  lib/SendMsg-2.0.jar lib/CheckMsgStatus-2.0.jar 
+ lib/httpclient-4.4.jar lib/httpcore-4.4.jar 
  lib/slf4j-simple-1.7.25.jar 
  lib/KdeJobContainerUtils.jar
 Main-Class: kde.jobcontainer.dep.Main

@@ -1,0 +1,92 @@
+2018-07-06 16:33:31  [ main:0 ] - [ DEBUG ]  CookieSpec selected: default
+2018-07-06 16:33:31  [ main:11 ] - [ DEBUG ]  Auth cache not set in the context
+2018-07-06 16:33:31  [ main:12 ] - [ DEBUG ]  Connection request: [route: {}->http://60.172.244.3:8800][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2018-07-06 16:33:31  [ main:45 ] - [ DEBUG ]  Connection leased: [id: 0][route: {}->http://60.172.244.3:8800][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+2018-07-06 16:33:31  [ main:48 ] - [ DEBUG ]  Opening connection {}->http://60.172.244.3:8800
+2018-07-06 16:33:31  [ main:54 ] - [ DEBUG ]  Connecting to /60.172.244.3:8800
+2018-07-06 16:33:31  [ main:106 ] - [ DEBUG ]  Connection established 192.168.20.102:53078<->60.172.244.3:8800
+2018-07-06 16:33:31  [ main:109 ] - [ DEBUG ]  Executing request GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1
+2018-07-06 16:33:31  [ main:109 ] - [ DEBUG ]  Target auth state: UNCHALLENGED
+2018-07-06 16:33:31  [ main:110 ] - [ DEBUG ]  Proxy auth state: UNCHALLENGED
+2018-07-06 16:33:31  [ main:113 ] - [ DEBUG ]  http-outgoing-0 >> GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1
+2018-07-06 16:33:31  [ main:113 ] - [ DEBUG ]  http-outgoing-0 >> Host: 60.172.244.3:8800
+2018-07-06 16:33:31  [ main:113 ] - [ DEBUG ]  http-outgoing-0 >> Connection: Keep-Alive
+2018-07-06 16:33:31  [ main:113 ] - [ DEBUG ]  http-outgoing-0 >> User-Agent: Apache-HttpClient/4.4 (Java 1.5 minimum; Java/1.8.0_66)
+2018-07-06 16:33:31  [ main:113 ] - [ DEBUG ]  http-outgoing-0 >> Accept-Encoding: gzip,deflate
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1[\r][\n]"
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "Host: 60.172.244.3:8800[\r][\n]"
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.4 (Java 1.5 minimum; Java/1.8.0_66)[\r][\n]"
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2018-07-06 16:33:31  [ main:114 ] - [ DEBUG ]  http-outgoing-0 >> "[\r][\n]"
+2018-07-06 16:33:34  [ main:3157 ] - [ DEBUG ]  http-outgoing-0 << "HTTP/1.1 200 OK[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "Cache-Control: private[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "Content-Length: 313[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "Content-Type: text/html; charset=utf-8[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "Server: Microsoft-IIS/7.5[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "X-AspNet-Version: 2.0.50727[\r][\n]"
+2018-07-06 16:33:34  [ main:3158 ] - [ DEBUG ]  http-outgoing-0 << "X-Powered-By: ASP.NET[\r][\n]"
+2018-07-06 16:33:34  [ main:3159 ] - [ DEBUG ]  http-outgoing-0 << "Date: Fri, 06 Jul 2018 08:55:56 GMT[\r][\n]"
+2018-07-06 16:33:34  [ main:3159 ] - [ DEBUG ]  http-outgoing-0 << "[\r][\n]"
+2018-07-06 16:33:34  [ main:3159 ] - [ DEBUG ]  http-outgoing-0 << "2018-07-06@00[0xe6][0x97][0xb6],01[0xe6][0x97][0xb6],02[0xe6][0x97][0xb6],03[0xe6][0x97][0xb6],04[0xe6][0x97][0xb6],05[0xe6][0x97][0xb6],06[0xe6][0x97][0xb6],07[0xe6][0x97][0xb6],08[0xe6][0x97][0xb6],09[0xe6][0x97][0xb6],10[0xe6][0x97][0xb6],11[0xe6][0x97][0xb6],12[0xe6][0x97][0xb6],13[0xe6][0x97][0xb6],14[0xe6][0x97][0xb6]@[0xe6][0xb5][0x81][0xe9][0x87][0x8f](T)@1162.1150,1153.8970,1147.0500,1125.1670,1096.4320,1092.1620,1103.9340,1098.5260,1122.0000,1108.8990,1075.4550,1184.2890,1272.4540,1336.2990,1394.6660@<span style='color:Red'>*15[0xe6][0x97][0xb6],16[0xe6][0x97][0xb6][0xe6][0x97][0xa0][0xe6][0x95][0xb0][0xe6][0x8d][0xae]</span>"
+2018-07-06 16:33:34  [ main:3162 ] - [ DEBUG ]  http-outgoing-0 << HTTP/1.1 200 OK
+2018-07-06 16:33:34  [ main:3162 ] - [ DEBUG ]  http-outgoing-0 << Cache-Control: private
+2018-07-06 16:33:34  [ main:3162 ] - [ DEBUG ]  http-outgoing-0 << Content-Length: 313
+2018-07-06 16:33:34  [ main:3163 ] - [ DEBUG ]  http-outgoing-0 << Content-Type: text/html; charset=utf-8
+2018-07-06 16:33:34  [ main:3163 ] - [ DEBUG ]  http-outgoing-0 << Server: Microsoft-IIS/7.5
+2018-07-06 16:33:34  [ main:3163 ] - [ DEBUG ]  http-outgoing-0 << X-AspNet-Version: 2.0.50727
+2018-07-06 16:33:34  [ main:3163 ] - [ DEBUG ]  http-outgoing-0 << X-Powered-By: ASP.NET
+2018-07-06 16:33:34  [ main:3163 ] - [ DEBUG ]  http-outgoing-0 << Date: Fri, 06 Jul 2018 08:55:56 GMT
+2018-07-06 16:33:34  [ main:3168 ] - [ DEBUG ]  Connection can be kept alive indefinitely
+2018-07-06 16:33:34  [ main:3177 ] - [ DEBUG ]  Connection [id: 0][route: {}->http://60.172.244.3:8800] can be kept alive indefinitely
+2018-07-06 16:33:34  [ main:3177 ] - [ DEBUG ]  Connection released: [id: 0][route: {}->http://60.172.244.3:8800][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+2018-07-06 16:33:34  [ main:3177 ] - [ DEBUG ]  Connection manager is shutting down
+2018-07-06 16:33:34  [ main:3178 ] - [ DEBUG ]  http-outgoing-0: Close connection
+2018-07-06 16:33:34  [ main:3178 ] - [ DEBUG ]  http-outgoing-0: Close connection
+2018-07-06 16:33:34  [ main:3178 ] - [ DEBUG ]  Connection manager shut down
+2018-07-06 16:38:21  [ main:0 ] - [ DEBUG ]  CookieSpec selected: default
+2018-07-06 16:38:21  [ main:9 ] - [ DEBUG ]  Auth cache not set in the context
+2018-07-06 16:38:21  [ main:10 ] - [ DEBUG ]  Connection request: [route: {}->http://60.172.244.3:8800][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2018-07-06 16:38:21  [ main:26 ] - [ DEBUG ]  Connection leased: [id: 0][route: {}->http://60.172.244.3:8800][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+2018-07-06 16:38:21  [ main:27 ] - [ DEBUG ]  Opening connection {}->http://60.172.244.3:8800
+2018-07-06 16:38:21  [ main:31 ] - [ DEBUG ]  Connecting to /60.172.244.3:8800
+2018-07-06 16:38:21  [ main:81 ] - [ DEBUG ]  Connection established 192.168.20.102:53189<->60.172.244.3:8800
+2018-07-06 16:38:21  [ main:82 ] - [ DEBUG ]  Executing request GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1
+2018-07-06 16:38:21  [ main:83 ] - [ DEBUG ]  Target auth state: UNCHALLENGED
+2018-07-06 16:38:21  [ main:84 ] - [ DEBUG ]  Proxy auth state: UNCHALLENGED
+2018-07-06 16:38:21  [ main:87 ] - [ DEBUG ]  http-outgoing-0 >> GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> Host: 60.172.244.3:8800
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> Connection: Keep-Alive
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> User-Agent: Apache-HttpClient/4.4 (Java 1.5 minimum; Java/1.8.0_66)
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> Accept-Encoding: gzip,deflate
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> "GET /GK/ZXGK/GetChartData.aspx?qyid=W1248&yzid=B01 HTTP/1.1[\r][\n]"
+2018-07-06 16:38:21  [ main:88 ] - [ DEBUG ]  http-outgoing-0 >> "Host: 60.172.244.3:8800[\r][\n]"
+2018-07-06 16:38:21  [ main:89 ] - [ DEBUG ]  http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+2018-07-06 16:38:21  [ main:89 ] - [ DEBUG ]  http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.4 (Java 1.5 minimum; Java/1.8.0_66)[\r][\n]"
+2018-07-06 16:38:21  [ main:89 ] - [ DEBUG ]  http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2018-07-06 16:38:21  [ main:89 ] - [ DEBUG ]  http-outgoing-0 >> "[\r][\n]"
+2018-07-06 16:38:23  [ main:2083 ] - [ DEBUG ]  http-outgoing-0 << "HTTP/1.1 200 OK[\r][\n]"
+2018-07-06 16:38:23  [ main:2083 ] - [ DEBUG ]  http-outgoing-0 << "Cache-Control: private[\r][\n]"
+2018-07-06 16:38:23  [ main:2083 ] - [ DEBUG ]  http-outgoing-0 << "Content-Length: 313[\r][\n]"
+2018-07-06 16:38:23  [ main:2083 ] - [ DEBUG ]  http-outgoing-0 << "Content-Type: text/html; charset=utf-8[\r][\n]"
+2018-07-06 16:38:23  [ main:2083 ] - [ DEBUG ]  http-outgoing-0 << "Server: Microsoft-IIS/7.5[\r][\n]"
+2018-07-06 16:38:23  [ main:2084 ] - [ DEBUG ]  http-outgoing-0 << "X-AspNet-Version: 2.0.50727[\r][\n]"
+2018-07-06 16:38:23  [ main:2084 ] - [ DEBUG ]  http-outgoing-0 << "X-Powered-By: ASP.NET[\r][\n]"
+2018-07-06 16:38:23  [ main:2084 ] - [ DEBUG ]  http-outgoing-0 << "Date: Fri, 06 Jul 2018 09:00:45 GMT[\r][\n]"
+2018-07-06 16:38:23  [ main:2084 ] - [ DEBUG ]  http-outgoing-0 << "[\r][\n]"
+2018-07-06 16:38:23  [ main:2084 ] - [ DEBUG ]  http-outgoing-0 << "2018-07-06@00[0xe6][0x97][0xb6],01[0xe6][0x97][0xb6],02[0xe6][0x97][0xb6],03[0xe6][0x97][0xb6],04[0xe6][0x97][0xb6],05[0xe6][0x97][0xb6],06[0xe6][0x97][0xb6],07[0xe6][0x97][0xb6],08[0xe6][0x97][0xb6],09[0xe6][0x97][0xb6],10[0xe6][0x97][0xb6],11[0xe6][0x97][0xb6],12[0xe6][0x97][0xb6],13[0xe6][0x97][0xb6],14[0xe6][0x97][0xb6]@[0xe6][0xb5][0x81][0xe9][0x87][0x8f](T)@1162.1150,1153.8970,1147.0500,1125.1670,1096.4320,1092.1620,1103.9340,1098.5260,1122.0000,1108.8990,1075.4550,1184.2890,1272.4540,1336.2990,1394.6660@<span style='color:Red'>*15[0xe6][0x97][0xb6],16[0xe6][0x97][0xb6][0xe6][0x97][0xa0][0xe6][0x95][0xb0][0xe6][0x8d][0xae]</span>"
+2018-07-06 16:38:23  [ main:2086 ] - [ DEBUG ]  http-outgoing-0 << HTTP/1.1 200 OK
+2018-07-06 16:38:23  [ main:2086 ] - [ DEBUG ]  http-outgoing-0 << Cache-Control: private
+2018-07-06 16:38:23  [ main:2086 ] - [ DEBUG ]  http-outgoing-0 << Content-Length: 313
+2018-07-06 16:38:23  [ main:2086 ] - [ DEBUG ]  http-outgoing-0 << Content-Type: text/html; charset=utf-8
+2018-07-06 16:38:23  [ main:2087 ] - [ DEBUG ]  http-outgoing-0 << Server: Microsoft-IIS/7.5
+2018-07-06 16:38:23  [ main:2087 ] - [ DEBUG ]  http-outgoing-0 << X-AspNet-Version: 2.0.50727
+2018-07-06 16:38:23  [ main:2087 ] - [ DEBUG ]  http-outgoing-0 << X-Powered-By: ASP.NET
+2018-07-06 16:38:23  [ main:2087 ] - [ DEBUG ]  http-outgoing-0 << Date: Fri, 06 Jul 2018 09:00:45 GMT
+2018-07-06 16:38:23  [ main:2090 ] - [ DEBUG ]  Connection can be kept alive indefinitely
+2018-07-06 16:38:23  [ main:2099 ] - [ DEBUG ]  Connection [id: 0][route: {}->http://60.172.244.3:8800] can be kept alive indefinitely
+2018-07-06 16:38:23  [ main:2099 ] - [ DEBUG ]  Connection released: [id: 0][route: {}->http://60.172.244.3:8800][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+2018-07-06 16:38:23  [ main:2099 ] - [ DEBUG ]  Connection manager is shutting down
+2018-07-06 16:38:23  [ main:2099 ] - [ DEBUG ]  http-outgoing-0: Close connection
+2018-07-06 16:38:23  [ main:2100 ] - [ DEBUG ]  http-outgoing-0: Close connection
+2018-07-06 16:38:23  [ main:2100 ] - [ DEBUG ]  Connection manager shut down

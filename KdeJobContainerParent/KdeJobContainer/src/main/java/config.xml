@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>系统配置</comment>
+	<entry key="centralmq_addr"><![CDATA[10.34.60.45:61616]]></entry>
+	<entry key="dbtype"><![CDATA[derby]]></entry>
+	<entry key="dburl"><![CDATA[]]></entry>
+	<entry key="dbdriver"><![CDATA[]]></entry>
+	<entry key="dbname"><![CDATA[]]></entry>
+	<entry key="dbusername"><![CDATA[]]></entry>
+	<entry key="dbuserpwd"><![CDATA[]]></entry>
+	<entry key="configHelper"><![CDATA[PropertiesConfigHelperImpl]]></entry>
+	<entry key="configHelperInfo"><![CDATA[
+		{
+		    datas: [
+		        {
+		            id: '10',
+		            serverId: '服务端的任务id',
+		            tag: '标签',
+		            type: 'getdata',
+		            name: '标识本任务的中文名称',
+		            start: '1',
+		            schedule: '*/15 * * * * ?',
+		            jarPath: 'g:/KdeSample.jar',
+		            jobClassName: 'kde.jobcontainer.sample.SampleJob',
+		            jobConfig: {
+		                desc:"配置各自不同任务自己的参数,例如url,参数配置数组等,会在初始化时传入任务"
+		            }
+		        }
+		    ]
+		}
+	]]></entry>
+</properties>  

@@ -12,9 +12,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSONObject;
-
-import kde.jobcontainer.util.abstracts.KJob;
+import kde.jobcontainer.util.abstracts.*;
 import kde.jobcontainer.util.domain.DEPJobConfig;
 
 /**
@@ -84,14 +82,14 @@ public class SampleJob extends KJob  {
 			//取响应的结果
 			int statusCode =response.getStatusLine().getStatusCode();
 	
-			System.out.println(statusCode);
+			logger.info(String.valueOf(statusCode));
 	
 			HttpEntity entity =response.getEntity();
 	
 			String string = EntityUtils.toString(entity,"utf-8");
 			//TODO 进行后续处理，如解析数据，入库等
 			
-			System.out.println(string);
+			logger.info(string);
 	
 			//关闭httpclient
 			response.close();

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>系统配置</comment>
+	<entry key="centralmq_addr"><![CDATA[10.34.60.45:61616]]></entry>
+	<entry key="dbtype"><![CDATA[derby]]></entry>
+	<entry key="dburl"><![CDATA[]]></entry>
+	<entry key="dbdriver"><![CDATA[]]></entry>
+	<entry key="dbname"><![CDATA[]]></entry>
+	<entry key="dbusername"><![CDATA[]]></entry>
+	<entry key="dbuserpwd"><![CDATA[]]></entry>
+	<entry key="configHelper"><![CDATA[PropertiesConfigHelperImpl]]></entry>
+	<entry key="configHelperInfo"><![CDATA[
+		{
+		    datas: [
+		        {
+		            id: '1',
+		            serverId: 'sendLAHydrological',
+		            tag: 'sendLAHydrological_hyits',
+		            type: 'triggerSync',
+		            name: '发送水文数据到六安',
+		            start: '1',
+		            schedule: '0/30 * * * * ?',
+		             jarPath: 'g:/SyncHydro.jar',
+		            jobClassName: 'kde.jobcontainer.job.synchydro.HYITSTriRecSyncJob',
+		            jobConfig: {
+		                sourceDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://10.22.2.142:1433;databaseName=JiLinRTDB',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'jlfb!@3$'
+		                },
+		                targetDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://192.168.1.54:1433;databaseName=SHZH_WATER',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'123'
+		                },
+		                tblAndPks:{
+		                	ST_FORECASTC_F	:	'STCD,UNITNAME,PLCD,FYMDH,IYMDH',
+		                	ST_FORECAST_F	:	'STCD,UNITNAME,PLCD,FYMDH,IYMDH,YMDH'
+		                },
+		                recordTblName:'st_senddo_e',
+		                sendwaitQueryWhere:" and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' ) and tabid in('ST_FORECASTC_F','ST_FORECAST_F') and moditime>'2015-08-02 17:00' "
+		            }
+		        }
+		    ]
+		}
+	]]></entry>
+</properties>  

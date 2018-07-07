@@ -21,7 +21,7 @@
 		            name: '标识本任务的中文名称',
 		            start: '1',
 		            schedule: '*/15 * * * * ?',
-		            jarPath: 'g:/KdeSample.jar',
+		            jarPath: '/home/kde/Tepia/04_Code/KJob/SampleJob.jar',
 		            jobClassName: 'kde.jobcontainer.sample.SampleJob',
 		            jobConfig: {
 		                desc:"配置各自不同任务自己的参数,例如url,参数配置数组等,会在初始化时传入任务"

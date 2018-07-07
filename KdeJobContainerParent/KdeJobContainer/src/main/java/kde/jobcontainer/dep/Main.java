@@ -22,8 +22,6 @@ import kde.jobcontainer.dep.manager.ScheduleManager;
 import kde.jobcontainer.dep.utils.DaoFactory;
 import kde.jobcontainer.util.domain.DEPJobConfig;
 
-import sun.misc.BASE64Encoder;
-
 public class Main {
 	public static Logger logger = LoggerFactory.getLogger(  Main.class );
 	protected static ScheduleManager sm = null;
@@ -89,7 +87,7 @@ public class Main {
 			String username = URLEncoder.encode(URLEncoder.encode("山洪",pageEncoding));
 			//String password = URLEncoder.encode(URLEncoder.encode("123456",pageEncoding));
 			
-			String password =  new BASE64Encoder().encodeBuffer("123456".getBytes());
+			String password = null;// new BASE64Encoder().encodeBuffer("123456".getBytes());
 			content = URLEncoder.encode(URLEncoder.encode(content,pageEncoding));
 			 // 打开连接
 	        HttpURLConnection connection = (HttpURLConnection) postUrl

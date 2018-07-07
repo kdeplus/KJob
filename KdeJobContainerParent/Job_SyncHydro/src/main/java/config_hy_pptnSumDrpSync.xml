@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>系统配置</comment>
+	<entry key="centralmq_addr"><![CDATA[10.34.60.45:61616]]></entry>
+	<entry key="dbtype"><![CDATA[derby]]></entry>
+	<entry key="dburl"><![CDATA[]]></entry>
+	<entry key="dbdriver"><![CDATA[]]></entry>
+	<entry key="dbname"><![CDATA[]]></entry>
+	<entry key="dbusername"><![CDATA[]]></entry>
+	<entry key="dbuserpwd"><![CDATA[]]></entry>
+	<entry key="configHelper"><![CDATA[PropertiesConfigHelperImpl]]></entry>
+	<entry key="configHelperInfo"><![CDATA[
+		{
+		    datas: [
+		        {
+		            id: '1',
+		            serverId: 'pptnSumDrpSync',
+		            tag: 'pptnSumDrpSync',
+		            type: 'sumDrp_Sync',
+		            name: '同步累计降雨数据',
+		            start: '1',
+		            schedule: '19 */10 * * * ?',
+		             jarPath: 'g:/SyncHydro.jar',
+		            jobClassName: 'kde.jobcontainer.job.synchydro.PptnSumDrpSyncJob',
+		            jobConfig: {
+		                sourceDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=SHZH_WATER',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'scfb@2011'
+		                },
+		                targetDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'scfb@2011'
+		                },
+		                sourceFilter:" and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5'  ) ",
+		                targetFilter:" and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5'  ) ",
+		                hourAgo:48,
+		                mqServerAddr:'tcp://10.22.2.151:61616'
+		            }
+		        }
+		    ]
+		}
+	]]></entry>
+	<!-- 
+		 sourceDbConfig: 源数据库配置
+         targetDbConfig: 目标数据库配置
+         sourceFilter:对于源数据库的相关过滤,一般是市防办山洪实时库
+         sourceFilter:对于目标数据库的相关过滤,一般是市防办水文交换库
+         hourAgo:48,向前推的小时数,这时间段内的数据,会对比检查,进行更新
+         mqServerAddr:信息的发送目标表
+         hourMaxRain:小时最大雨量的阈值,超过的话数据不进行上报,系统默认值为65,适用于东北地区
+	-->
+</properties>  

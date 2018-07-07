@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>系统配置</comment>
+	<entry key="centralmq_addr"><![CDATA[10.34.60.45:61616]]></entry>
+	<entry key="dbtype"><![CDATA[derby]]></entry>
+	<entry key="dburl"><![CDATA[]]></entry>
+	<entry key="dbdriver"><![CDATA[]]></entry>
+	<entry key="dbname"><![CDATA[]]></entry>
+	<entry key="dbusername"><![CDATA[]]></entry>
+	<entry key="dbuserpwd"><![CDATA[]]></entry>
+	<entry key="configHelper"><![CDATA[PropertiesConfigHelperImpl]]></entry>
+	<entry key="configHelperInfo"><![CDATA[
+		{
+		    datas: [
+		        {
+		            id: '1',
+		            serverId: 'sendLAHydrological',
+		            tag: 'sendLAHydrological_hyits',
+		            type: 'triggerSync',
+		            name: '发送水雨情数据到市级',
+		            start: '1',
+		            schedule: '0 */2 * * * ?',
+		            jarPath: 'g:/SyncHydro.jar',
+		            jobClassName: 'kde.jobcontainer.job.synchydro.HYITSTriRecSyncJob',
+		            jobConfig: {
+		                sourceDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=123',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'scfb@2011'
+		                },
+		                targetDbConfig: {
+		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO',
+		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
+		                    username:'sa',
+		                    userpwd:'scfb@2011'
+		                },
+		                tblAndPks:{
+		                	ST_PPTN_R	:	'STCD,TM',
+		                	ST_RSVR_R	:	'STCD,TM',
+		                	ST_RIVER_R	:	'STCD,TM'
+		                },
+		                recordTblName:'st_sendwait_e',
+		                mainQuery = " and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5') and tabid in('ST_PPTN_R','ST_RIVER_R','ST_RSVR_R') ",
+		                saveAndDeleteQry:" and slsh<:slsh and moditime<:moditime",
+		                delIntervalMins:720,
+		                delRowCount:100000,
+		                delDaysAgo:30,
+		                rowsOnce:3000,
+		                mqServerAddr:'tcp://10.22.2.151:61616',
+		                sendwaitQueryWhere:" and moditime>'2016-01-02 17:00' "
+		            }
+		        }
+		    ]
+		}
+	]]></entry>
+	<!-- 
+		 sourceDbConfig: 源数据库配置
+         targetDbConfig: 目标数据库配置
+         tblAndPks:要同步的表和对应的主键信息,
+         recordTblName:待同步的数据表
+         mainQuery:主要的查询语句,通过这个和saveAndDeleteQry以及sendwaitQueryWhere拼接起来进行操作
+         saveAndDeleteQry:针对需要导成文件并删除的数据的检索条件,
+         					确保slsh都是已经同步的,并且是很多天以前的,这次同步的slsh为空的时候,可能会只根据moditime进行判断
+         					删除的操作应该隔得时间比较久的时候运行一次,正常情况下不会出现slsh为空
+         delIntervalMins:删除操作的间隔分钟,通过每次执行后设定一个时间来判断下次执行时必须在间隔时间之后
+         delRowCount:一次删除保存数据的最大数量,
+         delDaysAgo:删除多少天以前的数据,
+         rowsOnce: 一次同步多少条数据
+         sendwaitQueryWhere: 检索哪些数据需要同步
+         mqServerAddr:'tcp://10.22.2.151:61616',任务执行信息的发送目标
+         
+         发送的数据到2675616时,用的删除数据会<2675616,永远剩一条数据,
+         删除的数据永远比发送的小,除非未发送过,记录的slsh为空的时候,会按天数删除之前所有的
+	-->
+</properties>  

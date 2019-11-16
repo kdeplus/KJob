@@ -14,42 +14,43 @@
 		{
 		    datas: [
 		        {
-		            id: '1',
-		            serverId: 'sendLAHydrological',
-		            tag: 'sendLAHydrological_hyits',
-		            type: 'triggerSync',
-		            name: '发送水雨情数据到市级',
-		            start: '1',
-		            schedule: '0 */2 * * * ?',
-		            jarPath: 'g:/SyncHydro.jar',
-		            jobClassName: 'kde.jobcontainer.job.synchydro.HYITSTriRecSyncJob',
+		            id: "1",
+		            serverId: "sendToJgpt",
+		            tag: "sendRtdDatas",
+		            type: "triggerSyncToRest",
+		            name: "发送实时数据到监管平台",
+		            start: "1",
+		            schedule: "0 */2 * * * ?",
+		            jarPath: "/tmp/SyncHydro.jar",
+		            jobClassName: "kde.jobcontainer.job.synchydro.HYITSTriRecSyncGDJob",
 		            jobConfig: {
 		                sourceDbConfig: {
-		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=123',
-		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
-		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    url: "jdbc:mysql://172.16.11.53:3306/skgj_biz?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false",
+		                    driver: "com.mysql.jdbc.Driver",
+		                    username:"root",
+		                    userpwd:"Tepia@123"
 		                },
 		                targetDbConfig: {
-		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO',
-		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
-		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    url: "jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO",
+		                    driver: "net.sourceforge.jtds.jdbc.Driver",
+		                    username:"sa",
+		                    userpwd:"scfb@2011"
 		                },
 		                tblAndPks:{
-		                	ST_PPTN_R	:	'STCD,TM',
-		                	ST_RSVR_R	:	'STCD,TM',
-		                	ST_RIVER_R	:	'STCD,TM'
+		                	ST_PPTN_R	:	"STCD,TM",
+		                	ST_RSVR_R	:	"STCD,TM",
+		                	ST_PICTURE_R	:	"STCD,TM",
+		                	ST_SEEPAGEFLOW_R	:	"STCD,TM"
 		                },
-		                recordTblName:'st_sendwait_e',
-		                mainQuery : " and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5') and tabid in('ST_PPTN_R','ST_RIVER_R','ST_RSVR_R') ",
+		                recordTblName:"st_sendwait_e",
+		                mainQuery : " and stcd in( select distinct(stcd) from st_stbprp_b where addvcd like '44%' ) and tabid in('ST_PPTN_R','ST_PICTURE_R','ST_RSVR_R','ST_SEEPAGEFLOW_R') ",
 		                saveAndDeleteQry:" and slsh<:slsh and moditime<:moditime",
 		                delIntervalMins:720,
-		                delRowCount:100000,
-		                delDaysAgo:30,
-		                rowsOnce:3000,
-		                mqServerAddr:'tcp://10.22.2.151:61616',
-		                sendwaitQueryWhere:" and moditime>'2016-01-02 17:00' "
+		                delRowCount:1,
+		                delDaysAgo:0,
+		                rowsOnce:3,
+		                sendwaitQueryWhere:" and moditime>'2019-11-14 00:00' and moditime<'2019-11-14 10:00'",
+		                sendToUrl : 'http://202.98.201.103:8999/api/v1/datasync/dataRecive/reciveData'
 		            }
 		        }
 		    ]
@@ -69,7 +70,7 @@
          delDaysAgo:删除多少天以前的数据,
          rowsOnce: 一次同步多少条数据
          sendwaitQueryWhere: 检索哪些数据需要同步
-         mqServerAddr:'tcp://10.22.2.151:61616',任务执行信息的发送目标
+         mqServerAddr:"tcp://10.22.2.151:61616",任务执行信息的发送目标
          
          发送的数据到2675616时,用的删除数据会<2675616,永远剩一条数据,
          删除的数据永远比发送的小,除非未发送过,记录的slsh为空的时候,会按天数删除之前所有的

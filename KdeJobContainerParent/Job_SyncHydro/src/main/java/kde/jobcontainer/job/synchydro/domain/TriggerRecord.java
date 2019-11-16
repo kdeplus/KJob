@@ -41,18 +41,28 @@ import com.alibaba.fastjson.JSONObject;
 }
  */
 public class TriggerRecord {
-	private static Logger logger = LoggerFactory.getLogger( TriggerRecord.class );
+	public static Logger logger = LoggerFactory.getLogger( TriggerRecord.class );
 	
 	
-	private int SLSH;
-	private String STCD;
-	private String TABID;
-	private JSONObject TM;
-	private String EXCKEY;
-	private String OPERATION;
-	private JSONObject MODITIME;
-	private String EXCINF;
+	public int SLSH;
+	public String STCD;
+	public String TABID;
+	public String TM;
+	public String EXCKEY;
+	public String OPERATION;
+	public String MODITIME;
+	public String EXCINF;
 	
+	public TriggerRecord() {
+		
+	}
+	public TriggerRecord(JSONObject obj) {
+		this.SLSH = obj.getIntValue("SLSH");
+		this.STCD = obj.getString( "STCD" );
+		this.TM = obj.getString( "TM" );
+		this.EXCINF = obj.getString("EXCINF");
+		this.OPERATION = obj.getString("OPERATION");
+	}
 	
 	public int getSLSH() {
 		return SLSH;
@@ -117,7 +127,7 @@ public class TriggerRecord {
 		}
 	}
 	
-	private String getDeleteSql(String pks,String dbtype){
+	public String getDeleteSql(String pks,String dbtype){
 		String[] pkss = pks.split(",");
 		StringBuilder sb = new StringBuilder();
 		sb.append( " delete from " ).append( this.getTABID() )
@@ -139,7 +149,7 @@ public class TriggerRecord {
 	 * 通过excinf的数据，获取更新sql语句
 	 * </pre>
 	 */
-	private String getUpdateSql(String pk,String dbtype){
+	public String getUpdateSql(String pk,String dbtype){
 		//20150606 lidong 提到前面，如果excinfJSON为空或无法转成json，没有key，则直接跳过
 		JSONObject j = this.getExcinfJSON();
 
@@ -185,7 +195,7 @@ public class TriggerRecord {
 	 * 获取数据插入的sql语句
 	 * </pre>
 	 */
-	private String getInsertSql(String dbtype){
+	public String getInsertSql(String dbtype){
 		
 		StringBuilder sb = new StringBuilder();		//存整个sql
 		StringBuilder sb2 = new StringBuilder();	//存values	
@@ -225,7 +235,7 @@ public class TriggerRecord {
 	 * 返回的值里面会有
 	 * </pre>
 	 */
-	private String getColumnValue(String key,JSONObject excinf,String dbtype){
+	public String getColumnValue(String key,JSONObject excinf,String dbtype){
 		//System.out.println( excinf );
 		Object obj = excinf.get( key );
 		if(obj==null)
@@ -254,7 +264,7 @@ public class TriggerRecord {
 		return "null";
 	}
 	
-	private JSONObject getExcinfJSON(){
+	public JSONObject getExcinfJSON(){
 		return JSONObject.parseObject( "{"+this.getEXCINF()+"}" );
 	}
 //	public static void main(String[] args){
@@ -270,16 +280,16 @@ public class TriggerRecord {
 //		System.out.println( String.valueOf( j1 ) );
 //		
 //	}
-	public JSONObject getTM() {
+	public String getTM() {
 		return TM;
 	}
-	public void setTM(JSONObject tM) {
+	public void setTM(String tM) {
 		TM = tM;
 	}
-	public JSONObject getMODITIME() {
+	public String getMODITIME() {
 		return MODITIME;
 	}
-	public void setMODITIME(JSONObject mODITIME) {
+	public void setMODITIME(String mODITIME) {
 		MODITIME = mODITIME;
 	}
 	

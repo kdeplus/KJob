@@ -10,7 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,17 +74,18 @@ public class HYITSTriggerRecordSyncDao {
 			//直接限制单次10000调
 			if(cfg.getDriver().indexOf("oracle")!=-1){
 				//sql = "select * from st_sendwait_e where rownum<10000 ";
-				sql = "select * from "+recordTable+" where 1=1 " ;
+				sql = "select * from "+recordTable+" where 1=1 toReplaceSql  order by slsh" ;
 				if(rowsOnce!=0)
 					sql+= " and rownum<"+ String.valueOf( rowsOnce );
 			}else if(cfg.getDriver().indexOf("jtds")!=-1){
 				sql = " select "+(rowsOnce==0?"":("top "+rowsOnce))
-						+" * from "+recordTable+" where 1=1 ";
+						+" * from "+recordTable+" where 1=1 toReplaceSql order by slsh";
+			}else if(cfg.getDriver().indexOf("mysql")!=-1){
+				sql = " select  * from "+recordTable+" where 1=1 toReplaceSql "+" order by slsh "+(rowsOnce==0?"":("limit "+rowsOnce) );
 			}else{
 				throw new Exception( "驱动无法识别" );
 			}
-			sql+= " "+whereSql;
-			sql+=" order by slsh ";
+			sql=sql.replace( "toReplaceSql" , whereSql==null?"":whereSql);
 			ResultSet rs = conn
 					.createStatement().executeQuery( sql );
 			while(rs.next()){
@@ -133,12 +138,24 @@ public class HYITSTriggerRecordSyncDao {
 	
 	
 	public static void main(String[] args) throws Exception{
+		
+		DbConfig cfg = new DbConfig();
+		cfg.setDriver("com.mysql.jdbc.Driver");
+		cfg.setUrl("jdbc:mysql://172.16.11.53:3306/skgcyxjg?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false");;
+		cfg.setUsername("root");
+		cfg.setUserpwd("Tepia@123");
+		HYITSTriggerRecordSyncDao d  = HYITSTriggerRecordSyncDao.getInstance();
+		List<String> stcds = Arrays.asList("90001068,90001068,90003000,90003000,90003010,90003010,90003016,90003016,90003037,90003037,90007877,90007877,90007894,90007894,90007901,90007901,90007916,90007916,90007917,90007917,90007936".split(","));
+		StringBuilder sb = new StringBuilder();
+		d.getStbprpListByStcds(cfg, sb, stcds);
+		
+		/*
 		String str = "STCD:\"62913900\",TM:\"2015-01-16 08:00:00\",UPZ:\"8.720\",";			;
 		if(str.endsWith(",")){
 			str = str.substring( 0 , str.length()-1);
 		}
 		System.out.println( str );
-		/*
+		
 		DbConfig cfg = new DbConfig();
 		cfg.setDriver("net.sourceforge.jtds.jdbc.Driver");
 		cfg.setUrl("jdbc:jtds:sqlserver://10.34.0.6:1433;databaseName=ahsl_yc");;
@@ -542,4 +559,57 @@ public class HYITSTriggerRecordSyncDao {
 	}
 	
 	
+	public Map<String,String> getStbprpListByStcds(DbConfig cfg,StringBuilder sb,List<String> stcds) throws Exception{
+		Connection conn = null ;
+		JSONObject obj = new JSONObject();
+		Map<String,String> datas = new HashMap<String,String>();
+		StringBuilder sql  = null;
+		try{
+			conn = DbUtil.getConnection( cfg );
+			//暂时值
+			if(conn==null){
+				throw new Exception( "无法获取到数据库链接"+JSONObject.toJSONString( cfg ).toString() );
+			}
+			sql = new StringBuilder();
+			//只查询编码和图像url
+			sql.append( "select stcd,imgurl from st_stbprp_b where imgurl is not null and imgurl!='' " );
+			//处理站码条件
+			if(stcds!=null||stcds.size()>0) {
+				sql.append(" and stcd in (");
+				int length = stcds.size();
+				for(int i=0;i<length;i++) {
+					sql.append('\'');
+					sql.append( stcds.get(i) );
+					sql.append('\'');
+					if((i+1)<length) {
+						sql.append(',');
+					}
+				}
+				sql.append(')');
+			}
+			ResultSet rs = conn
+					.createStatement().executeQuery( sql.toString() );
+			while(rs.next()){
+				datas.put(  rs.getString("stcd"), rs.getString("imgurl"));
+			}
+			System.out.println( datas.toString() );  
+			rs.close();
+		}catch(Exception e){
+			String msg = "执行sql出错:"+e.getMessage()+"\r\n"+sql;
+			sb.append("\r\n").append( msg );
+			logger.error( msg,e );
+		}finally{
+			if(conn!=null)
+				conn.close();
+			String msg =  "查询库中待同步图像站点数据,SQL:\t"+sql.toString()+",\t得到"+datas.keySet().size()+"条数据.";
+			logger.debug( msg );
+			sb.append("\r\n").append( msg );
+			return datas;
+		}
+	}
+	
+	
+	
+	
+
 }

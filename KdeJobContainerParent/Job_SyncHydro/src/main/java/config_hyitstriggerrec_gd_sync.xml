@@ -42,6 +42,9 @@
 		                	ST_PICTURE_R	:	"STCD,TM",
 		                	ST_SEEPAGEFLOW_R	:	"STCD,TM"
 		                },
+		                sysid:'shuikuguanjia',
+		                adcd:'440000',
+		                token:'c3493cc7133510cdcffaf17db5e1f23b3e28ebf57125f5ed6916647b4bc904978fecf2394f5c20bcb28260f593a7eb95600dc4dd024073d61dfa27d62a67e84a3829f1434de8e92bd9b3bba7187e3a0162025d38d5453c0bf0823fb8c7fd5d7546102ba50abbfa4d50ddd989acd630f9a7a2e367a63c0018',
 		                recordTblName:"st_sendwait_e",
 		                mainQuery : " and stcd in( select distinct(stcd) from st_stbprp_b where addvcd like '44%' ) and tabid in('ST_PPTN_R','ST_PICTURE_R','ST_RSVR_R','ST_SEEPAGEFLOW_R') ",
 		                saveAndDeleteQry:" and slsh<:slsh and moditime<:moditime",
@@ -50,7 +53,7 @@
 		                delDaysAgo:0,
 		                rowsOnce:3,
 		                sendwaitQueryWhere:" and moditime>'2019-11-14 00:00' and moditime<'2019-11-14 10:00'",
-		                sendToUrl : 'http://202.98.201.103:8999/api/v1/datasync/dataRecive/reciveData'
+		                sendToUrl : 'http://127.0.0.1:8790/data/recive'
 		            }
 		        }
 		    ]

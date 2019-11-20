@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -102,9 +103,10 @@ public class HYITSTriggerRecordSyncToGDService extends HYITSTriggerRecordSyncSer
 	 */
 	public JSONObject getBaseJson(DEPJobConfig depConfig) {
 		JSONObject rpt = new JSONObject();
-		rpt.put("adcd", "440000");
-		rpt.put("sysid", "shuikuguanjia");
-		rpt.put("token", "440000");
+		JSONObject jobConfig = depConfig.getJobConfigJson();
+		rpt.put("adcd",  jobConfig.containsKey( "adcd" )?jobConfig.getString("adcd"):"440000");
+		rpt.put("sysid", jobConfig.containsKey( "sysid" )?jobConfig.getString("sysid"):"shuikuguanjia");
+		rpt.put("token", jobConfig.containsKey( "token" )?jobConfig.getString("token"):"440000");
 		rpt.put("time", DateUtil.converDateToString( new Date() ));
 		rpt.put("dataType", GDSkgjConstants.DATATYPE_RTD);
 		
@@ -154,8 +156,8 @@ public class HYITSTriggerRecordSyncToGDService extends HYITSTriggerRecordSyncSer
 			String string = EntityUtils.toString(entity,"utf-8");
 			//TODO 进行后续处理，如解析数据，入库等
 			logger.info(string);
-			if(statusCode!=200) {
-				throw new Exception("未能向服务器正常发送数据！返回http状态码为"+statusCode+"\t"+string);
+			if(statusCode!=200||StringUtils.isEmpty( string )||string.indexOf("已接收")==-1) {
+				throw new Exception("未能向服务器正常发送数据！返回http状态码为"+statusCode+"\t内容为"+string);
 			}
 		}catch(Exception e) {
 			logger.error( "发送报文时出现异常",e );

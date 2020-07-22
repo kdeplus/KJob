@@ -525,7 +525,9 @@ public class HYITSTriggerRecordSyncService {
 			return "oracle";
 		}else if(cfg.getDriver().indexOf("jtds")!=-1){
 			return "sqlserver";
-		}else{
+		}else if(cfg.getDriver().indexOf("mysql")!=-1){
+            return "mysql";
+        }else{
 			throw new Exception( "驱动无法识别" );
 		}
 	}

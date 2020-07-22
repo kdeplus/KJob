@@ -245,7 +245,7 @@ public class TriggerRecord {
 			if(key.equals( "TM" )){
 				if("oracle".equals( dbtype )){
 					return "to_date('"+(String)obj+"','yyyy-MM-dd HH24:mi:ss')";
-				}else if("sqlserver".equals( dbtype )){
+				}else if("sqlserver".equals( dbtype ) || "mysql".equals( dbtype ) ){
 					return "'"+(String)obj+"'";
 				}else if(1==1){	//其他类型
 					return excinf.getString( key );

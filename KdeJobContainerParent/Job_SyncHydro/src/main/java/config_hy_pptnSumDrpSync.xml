@@ -28,13 +28,13 @@
 		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=SHZH_WATER',
 		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
 		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    userpwd:'123456'
 		                },
 		                targetDbConfig: {
 		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO',
 		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
 		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    userpwd:'123456'
 		                },
 		                sourceFilter:" and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5'  ) ",
 		                targetFilter:" and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5'  ) ",

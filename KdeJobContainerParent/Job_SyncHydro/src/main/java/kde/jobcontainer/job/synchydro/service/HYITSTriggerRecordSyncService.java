@@ -78,7 +78,7 @@ public class HYITSTriggerRecordSyncService {
 		dbCfg.setUserpwd( "jlfb!@3$" );
 		String whereStr = " and tabid='ST_PPTN_R' and operation='D' and stcd in( select stcd from st_stbprp_b where addvcd like '2201%' ) and tm>'2017-07-19' and excinf like '%,DYP%'";
 		StringBuilder sb = new StringBuilder();
-		JSONArray arr = getInstance().getGwtpDao().getDatas( whereStr , dbCfg ,"ST_SENDDO_E",50000,sb);
+		JSONArray arr = getInstance().getGwtpDao().getDatas( whereStr , dbCfg ,"ST_SENDDO_E",50000,sb,"测试");
 		TriggerRecord triReg = null;
 		JSONObject json = null;
 		PptnSumDrpSyncConfig cfg = new PptnSumDrpSyncConfig();
@@ -145,7 +145,7 @@ public class HYITSTriggerRecordSyncService {
 			//数据库链接
 			DbConfig dbCfg = new DbConfig( cfg.getSourceDbConfig() );
 			//查询数据库获取数据
-			JSONArray arr = this.getGwtpDao().getDatas( whereStr , dbCfg ,cfg.getRecordTblName(),this.getRowsOnce( cfg.getRowsOnce() ),sb);
+			JSONArray arr = this.getGwtpDao().getDatas( whereStr , dbCfg ,cfg.getRecordTblName(),this.getRowsOnce( cfg.getRowsOnce() ),sb,depConfig.getName());
 			//如果非空,则需要发送数据
 			//记录最后一个slsh
 			String newLashSlsh = null; 
@@ -175,7 +175,7 @@ public class HYITSTriggerRecordSyncService {
 				mqu.sendMessage( sb.toString() , cfg.getMqServerAddr(), "syncinfo");
 				logger.info("完成任务运行相关信息的发送:"+depConfig.getName()+"\t"+depConfig.getServerId());
 			}else{
-				logger.info("未配置信息发送的目标,跳过:"+depConfig.getName()+"\t"+depConfig.getServerId());
+				logger.info("未配置处理信息发送的队列服务目标,跳过:"+depConfig.getName()+"\t"+depConfig.getServerId());
 			}
 		}catch(Exception e){
 			//20150207 lidong 对于数据和异常处理的问题
@@ -217,6 +217,20 @@ public class HYITSTriggerRecordSyncService {
 			return x;
 		}
 	}
+	/**
+	 * Description: 
+	 *  20210107 淡出抽出一个方法，其他类继承的情况下容易调整sql生成的方法
+	 * @author lidong
+	 * @param triReg
+	 * @param cfg
+	 * @param dbCfg
+	 * @return
+	 * @throws Exception 
+	 */ 
+	public String getSqlByTriggerRec(TriggerRecord triReg,HYITSTriggerRecordSyncConfig cfg,DbConfig dbCfg) throws Exception {
+		return triReg.getSql( cfg.getTblAndPks().getString( triReg.getTABID() ),this.getDbType(dbCfg));
+	}
+	
 	
 	/**
 	 * @author lidong 2015年5月26日
@@ -257,7 +271,10 @@ public class HYITSTriggerRecordSyncService {
  			for(int i=0;i<arr.size();i++){
 				json = arr.getJSONObject(i);
 				triReg = (TriggerRecord)JSONObject.toJavaObject( json,TriggerRecord.class );
-				tmpSql = triReg.getSql( cfg.getTblAndPks().getString( triReg.getTABID() ),this.getDbType(dbCfg));
+				//20210107 lidong 这里调整下，单独抽出来一个方法，这样在其他继承类中方便处理
+				//tmpSql = triReg.getSql( cfg.getTblAndPks().getString( triReg.getTABID() ),this.getDbType(dbCfg));
+				tmpSql = this.getSqlByTriggerRec(triReg, cfg, dbCfg);
+				
 				//将数据暂时存放到一个list中
 				if(tmpSql!=null){	//20150608 lidong 松辽的update数据有问题，有可能会是update set 为空，然后加where 条件报错，后来处理这种情况返回null
 					sqlList.add( tmpSql );
@@ -350,6 +367,7 @@ public class HYITSTriggerRecordSyncService {
 	private void saveFileAndDelete(HYITSTriggerRecordSyncConfig config,String newSlsh,
 			DbConfig dbcfg,DEPJobConfig depCfg ,StringBuilder sb){
 		//处理保存\删除数据的执行时间
+		logger.debug("{}:开始准备删除数据并保存文件记录",depCfg.getName());
 		String key=depCfg.getId()+"_"+depCfg.getServerId()+"_"+depCfg.getName();
 		Date nextRunDelTm = nextTmMap.get( key );
 		if(nextRunDelTm==null){
@@ -392,7 +410,7 @@ public class HYITSTriggerRecordSyncService {
 					}
 					//查询数据库获取数据,rowsOnce传0,取出符合条件的所有数据:where{}",saveAndDeleteQry);
 					JSONArray arr = this.getGwtpDao().getDatas(saveAndDeleteQry, dbcfg,
-							config.getRecordTblName(), config.getDelRowCount() ,sb);
+							config.getRecordTblName(), config.getDelRowCount() ,sb,depCfg.getName());
 					if(arr!=null&&arr.size()>0){
 						//有数据,保存为zip文件
 						this.saveSendDataToFile(arr, depCfg);
@@ -413,24 +431,24 @@ public class HYITSTriggerRecordSyncService {
 					
 					
 					//如果前面的异常了,设置时间的会不成过,下次还要再执行
-					String  msg="设置下次删除数据的时间不早于"+DateUtil.DateTimeToString( nextRunDelTm, "MM-dd HH:mm");
+					String  msg="{}:设置下次删除数据的时间不早于"+DateUtil.DateTimeToString( nextRunDelTm, "MM-dd HH:mm");
 					sb.append("\r\n").append( msg );
-					logger.debug( msg );
+					logger.debug( msg,depCfg.getName() );
 				}catch(Exception e){
-					logger.error(e.getMessage(), e);
+					logger.error(depCfg.getName()+e.getMessage(), e);
 					sb.append( "\r\n" ).append("保存删除出错").append( e.getMessage() );
 				}finally{
 					//做些剩余的工作
 					
 				}
 			}else{
-				String msg = "配置了delete参数,目前未到执行时间"+DateUtil.DateTimeToString(nextRunDelTm, "MM-dd HH:mm");
-				logger.info( msg );
+				String msg = "{}:配置了delete参数,目前未到执行时间"+DateUtil.DateTimeToString(nextRunDelTm, "MM-dd HH:mm");
+				logger.info( msg,depCfg.getName() );
 				sb.append( "\r\n" ).append( msg );
 			}
 		}else{
-			String msg = "未配置saveAndDeleteQry或配置为空,程序不进行历史数据的导出保存和删除";
-			logger.debug( msg );
+			String msg = "{}:未配置saveAndDeleteQry或配置为空,程序不进行历史数据的导出保存和删除";
+			logger.debug( msg,depCfg.getName() );
 			sb.append( "\r\n" ).append( msg );
 		}
 	}
@@ -482,13 +500,13 @@ public class HYITSTriggerRecordSyncService {
 		String key = depCfg.getId().toString()+"_"+depCfg.getServerId();
 		String path = depCfg.getJarPath();
 		if(arr==null||arr.size()==0){
-			logger.warn( "需要保存的jsonArray为空" );
+			logger.warn( "{}:需要保存的jsonArray为空",depCfg.getName() );
 			return;
 		}
 		//获取文件名
 		JSONObject last = arr.getJSONObject( arr.size()-1 );
 		if(last==null||last.get("SLSH")==null){
-			logger.warn( "arr中最后数据为空或SLSH为空" );
+			logger.warn( "{}:arr中最后数据为空或SLSH为空",depCfg.getName() );
 			return;
 		}
 		String name = last.get("SLSH").toString();
@@ -514,12 +532,12 @@ public class HYITSTriggerRecordSyncService {
 				logger.error( e.getMessage(),e );
 			}
 		}else{
-			logger.error( "找不到对应的jar文件路径,来生成数据文件" );
+			logger.error( "{}:找不到对应的jar文件路径,来生成数据文件",depCfg.getName() );
 		}
 
 	}
 	
-	private String getDbType(DbConfig cfg ) throws Exception {
+	protected String getDbType(DbConfig cfg ) throws Exception {
 		//直接限制单次10000调
 		if(cfg.getDriver().indexOf("oracle")!=-1){
 			return "oracle";

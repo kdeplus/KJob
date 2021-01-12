@@ -238,27 +238,37 @@ public class TriggerRecord {
 	public String getColumnValue(String key,JSONObject excinf,String dbtype){
 		//System.out.println( excinf );
 		Object obj = excinf.get( key );
-		if(obj==null)
-			return "null";
+		if(obj==null) {
+			obj =  excinf.get( key.toLowerCase() );
+			if(obj==null)
+				return "null";
+		}
 		if( obj instanceof java.lang.String ){
 			//根据时间进行处理
-			if(key.equals( "TM" )){
+			if(key.equalsIgnoreCase( "TM" )){
 				if("oracle".equals( dbtype )){
 					return "to_date('"+(String)obj+"','yyyy-MM-dd HH24:mi:ss')";
 				}else if("sqlserver".equals( dbtype ) || "mysql".equals( dbtype ) ){
 					return "'"+(String)obj+"'";
 				}else if(1==1){	//其他类型
-					return excinf.getString( key );
+					return String.valueOf( obj );
 				}
 			}else{
-				return "'"+excinf.getString( key )+"'";
+				return "'"+String.valueOf( obj )+"'";
 			}
 		}else if( obj instanceof java.lang.Double){
 			return String.valueOf( (Double)obj );
 		}else if( obj instanceof java.lang.Integer ){
 			return String.valueOf( (Integer)obj );
+		}else if( obj instanceof java.lang.Long ){
+			return String.valueOf( (Long)obj );
 		}else if( obj instanceof JSONObject ){
-			
+			//20210107 lidong 扩展一下，好来处理一些特殊情况
+			JSONObject valueJson = (JSONObject)obj;
+			if(valueJson.containsKey("sql"))
+				return valueJson.getString( "sql" );//这样可以嵌套进去一个小sql，或者函数之类
+			else
+				logger.warn("识别到excinf中为json类型，但目前没有对应的解析处理",valueJson.toJSONString());
 		}else 
 			return String.valueOf( obj );
 		return "null";

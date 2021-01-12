@@ -15,24 +15,25 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import kde.jobcontainer.job.synchydro.service.HYITSTriggerRecordSyncToGDService;
+import kde.jobcontainer.job.synchydro.service.HYITSTriggerRecordSyncToV2Service;
 import kde.jobcontainer.util.abstracts.KJob;
 import kde.jobcontainer.util.domain.DEPJobConfig;
 
 
 /**
- * @author lidong 20191116
+ * @author lidong 20210108
  * <pre>
- * 按广东的格式拼装实时水雨情、图像、渗流数据的内容
+ *   代码调整适配一下，在原来基础上，增加对管家库到融合库版本的渗压、渗流的特殊处理，主要是数据字段有变化
+	 配置上没有什么差异，主要在tblAndPks需要写目标表的表表名以及主键字段名
  * </pre>
  */
-public class HYITSTriRecSyncGDJob extends KJob {
+public class HYITSTriRecSyncToV2Job extends KJob {
 
-	private static Logger logger = LoggerFactory.getLogger( HYITSTriRecSyncGDJob.class );
-	private HYITSTriggerRecordSyncToGDService htrsService;	//服务
+	private static Logger logger = LoggerFactory.getLogger( HYITSTriRecSyncToV2Job.class );
+	private HYITSTriggerRecordSyncToV2Service htrsService;	//服务
 	
-	public HYITSTriRecSyncGDJob(){
-		logger.debug( "实例化HYITSTriRecSyncGDJob" );
+	public HYITSTriRecSyncToV2Job(){
+		logger.debug( "实例化HYITSTriRecSyncToV2Job" );
 	}
 	
 	/* (non-Javadoc)
@@ -42,17 +43,17 @@ public class HYITSTriRecSyncGDJob extends KJob {
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		// TODO Auto-generated method stub
-		this.executeInit(HYITSTriRecSyncGDJob.class, arg0);
-		logger.info( "HYITSTriRecSyncGDJob 执行工作!" +this.config.getName());
+		this.executeInit(HYITSTriRecSyncToV2Job.class, arg0);
+		logger.info( "HYITSTriRecSyncToV2Job 执行工作!" +this.config.getName());
 		//执行任务
 		this.getHtrsService().doJob(this.config);
-		logger.info( "HYITSTriRecSyncGDJob 结束工作!" +this.config.getName() );	
+		logger.info( "HYITSTriRecSyncToV2Job 结束工作!" +this.config.getName() );	
 	}
 
 	public static void main(String[] args) throws Exception{
 		DEPJobConfig dp = new DEPJobConfig();
 		PropertyConfigurator.configure("/mnt/Work/Tepia/04_Code/KJob/KdeJobContainerParent/Job_SyncHydro/log4j.properties");
-		File file = new File("/mnt/Work/Tepia/04_Code/KJob/KdeJobContainerParent/Job_SyncHydro/src/main/java/config_hyitstriggerrec_gd_sync.xml");
+		File file = new File("/mnt/Work/Tepia/04_Code/KJob/KdeJobContainerParent/Job_SyncHydro/src/main/java/config_hyitstriggerrec_sync_toV2.xml");
 	    InputStream in = new FileInputStream(file);
 	  
 		Properties p = new Properties();
@@ -63,21 +64,21 @@ public class HYITSTriRecSyncGDJob extends KJob {
 		JSONObject json = JSONObject.parseObject( configHelperInfo );
 		JSONArray arr = ((JSONObject)json).getJSONArray( "datas" );
 		DEPJobConfig cfg = new DEPJobConfig( arr.getJSONObject(0) );
-		HYITSTriRecSyncGDJob d = new HYITSTriRecSyncGDJob();
+		HYITSTriRecSyncToV2Job d = new HYITSTriRecSyncToV2Job();
 		d.getHtrsService().doJob(  cfg );
 	}
 	
 	
 	
 
-	public HYITSTriggerRecordSyncToGDService getHtrsService() {
+	public HYITSTriggerRecordSyncToV2Service getHtrsService() {
 		//注意，这里用子类做的初始化，应该获取到的是子类中的实例
 		if(this.htrsService==null)
-			this.htrsService = HYITSTriggerRecordSyncToGDService.getInstance();
+			this.htrsService = HYITSTriggerRecordSyncToV2Service.getInstance();
 		return htrsService;
 	}
 
-	public void setHtrsService(HYITSTriggerRecordSyncToGDService htrsService) {
+	public void setHtrsService(HYITSTriggerRecordSyncToV2Service htrsService) {
 		this.htrsService = htrsService;
 	}
 	

@@ -28,18 +28,21 @@
 		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=123',
 		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
 		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    userpwd:'123456'
 		                },
 		                targetDbConfig: {
 		                    url: 'jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO',
 		                    driver: 'net.sourceforge.jtds.jdbc.Driver',
 		                    username:'sa',
-		                    userpwd:'scfb@2011'
+		                    userpwd:'123456'
 		                },
 		                tblAndPks:{
 		                	ST_PPTN_R	:	'STCD,TM',
 		                	ST_RSVR_R	:	'STCD,TM',
-		                	ST_RIVER_R	:	'STCD,TM'
+		                	ST_RIVER_R	:	'STCD,TM',
+		                	ST_RSVR_R	:	'STCD,TM',
+		                	ST_RIVER_R	:	'STCD,TM',
+		                	
 		                },
 		                recordTblName:'st_sendwait_e',
 		                mainQuery : " and stcd in( select stcd from st_stbprp_b where addvcd like '2202%' and frgrd='5') and tabid in('ST_PPTN_R','ST_RIVER_R','ST_RSVR_R') ",

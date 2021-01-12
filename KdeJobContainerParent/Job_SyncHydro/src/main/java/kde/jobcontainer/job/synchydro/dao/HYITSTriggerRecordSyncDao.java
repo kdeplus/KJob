@@ -62,7 +62,7 @@ public class HYITSTriggerRecordSyncDao {
 	 * 通过过滤条件,获取数据
 	 * </pre>
 	 */
-	public JSONArray getDatas(String whereSql,DbConfig cfg,String recordTable,int rowsOnce,StringBuilder sb)  throws Exception{
+	public JSONArray getDatas(String whereSql,DbConfig cfg,String recordTable,int rowsOnce,StringBuilder sb,String name)  throws Exception{
 		Connection conn = null ;
 		JSONArray arr = new JSONArray();
 		String sql = null;
@@ -101,8 +101,8 @@ public class HYITSTriggerRecordSyncDao {
 		}finally{
 			if(conn!=null)
 				conn.close();
-			String msg =  "查询库中待同步雨水情数据,SQL:\t"+sql+",\t得到"+arr.size()+"条数据.";
-			logger.debug( msg );
+			String msg =  "{}:查询库中待同步雨水情数据,SQL:\t"+sql+",\t得到"+arr.size()+"条数据.";
+			logger.debug( msg,name);
 			sb.append("\r\n").append( msg );
 			return arr;
 		}
@@ -141,9 +141,9 @@ public class HYITSTriggerRecordSyncDao {
 		
 		DbConfig cfg = new DbConfig();
 		cfg.setDriver("com.mysql.jdbc.Driver");
-		cfg.setUrl("jdbc:mysql://172.16.11.53:3306/skgcyxjg?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false");;
+		cfg.setUrl("jdbc:mysql://code.itepia.com:3306/skgcyxjg?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false");;
 		cfg.setUsername("root");
-		cfg.setUserpwd("Tepia@123");
+		cfg.setUserpwd("123456");
 		HYITSTriggerRecordSyncDao d  = HYITSTriggerRecordSyncDao.getInstance();
 		List<String> stcds = Arrays.asList("90001068,90001068,90003000,90003000,90003010,90003010,90003016,90003016,90003037,90003037,90007877,90007877,90007894,90007894,90007901,90007901,90007916,90007916,90007917,90007917,90007936".split(","));
 		StringBuilder sb = new StringBuilder();

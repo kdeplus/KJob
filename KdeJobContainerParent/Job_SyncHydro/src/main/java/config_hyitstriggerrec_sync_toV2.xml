@@ -14,52 +14,57 @@
 		{
 		    datas: [
 		        {
-		            id: "1",
-		            serverId: "sendToJgpt",
-		            tag: "sendRtdDatas",
-		            type: "triggerSyncToRest",
-		            name: "发送实时数据到监管平台",
-		            start: "1",
-		            schedule: "0 */2 * * * ?",
-		            jarPath: "/tmp/SyncHydro.jar",
-		            jobClassName: "kde.jobcontainer.job.synchydro.HYITSTriRecSyncGDJob",
+		            id: '1',
+		            serverId: 'sendRtDataToSkgjV2',
+		            tag: 'sendRtDataToSkgjV2_hyits',
+		            type: 'triggerSync_v2',
+		            name: '从管家数据库发送实时监测数据到融合版本库',
+		            start: '1',
+		            schedule: '0 */2 * * * ?',
+		            jarPath: '/tmp/SyncHydro.jar',
+		            jobClassName: 'kde.jobcontainer.job.synchydro.HYITSTriRecSyncToV2Job',
 		            jobConfig: {
 		                sourceDbConfig: {
-		                    url: "jdbc:mysql://172.16.11.53:3306/skgj_biz?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false",
+		                    url: "jdbc:mysql://127.0.0.1:4306/skgj_biz?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false",
 		                    driver: "com.mysql.jdbc.Driver",
 		                    username:"root",
 		                    userpwd:"123456"
 		                },
 		                targetDbConfig: {
-		                    url: "jdbc:jtds:sqlserver://192.168.140.210:1433;databaseName=HYDRO",
-		                    driver: "net.sourceforge.jtds.jdbc.Driver",
-		                    username:"sa",
+		                    url: "jdbc:mysql://127.0.0.1:4306/skgj_v2?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF8&useSSL=false",
+		                    driver: "com.mysql.jdbc.Driver",
+		                    username:"root",
 		                    userpwd:"123456"
 		                },
 		                tblAndPks:{
-		                	ST_PPTN_R	:	"STCD,TM",
-		                	ST_RSVR_R	:	"STCD,TM",
-		                	ST_PICTURE_R	:	"STCD,TM",
-		                	ST_SEEPAGEFLOW_R	:	"STCD,TM"
+		                	ST_PPTN_R	:	'STCD,TM',
+		                	ST_RSVR_R	:	'STCD,TM',
+		                	ST_RIVER_R	:	'STCD,TM',
+		                	DAM_RT_OSMOMETER	:	'measuring_point,TM',
+		                	DAM_RT_WEIR	:	'measuring_point,TM',
+		                	
 		                },
-		                sysid:'shuikuguanjia',
-		                adcd:'440000',
-		                token:'c3493cc7133510cdcffaf17db5e1f23b3e28ebf57125f5ed6916647b4bc904978fecf2394f5c20bcb28260f593a7eb95600dc4dd024073d61dfa27d62a67e84a3829f1434de8e92bd9b3bba7187e3a0162025d38d5453c0bf0823fb8c7fd5d7546102ba50abbfa4d50ddd989acd630f9a7a2e367a63c0018',
-		                recordTblName:"st_sendwait_e",
-		                mainQuery : " and stcd in( select distinct(stcd) from st_stbprp_b where addvcd like '44%' ) and tabid in('ST_PPTN_R','ST_PICTURE_R','ST_RSVR_R','ST_SEEPAGEFLOW_R') ",
+		                recordTblName:'st_sendwait_e',
+		                mainQuery : " and tabid in('ST_RSVR_R') and operation='U'",
 		                saveAndDeleteQry:" and slsh<:slsh and moditime<:moditime",
 		                delIntervalMins:720,
-		                delRowCount:1,
-		                delDaysAgo:0,
+		                delRowCount:100000,
+		                delDaysAgo:30,
 		                rowsOnce:3,
-		                sendwaitQueryWhere:" and moditime>'2019-11-14 00:00' and moditime<'2019-11-14 10:00' ",
-		                sendToUrl : 'http://127.0.0.1:8790/data/recive'
+		                sendwaitQueryWhere:" and moditime>'2020-12-02 17:00' "
 		            }
 		        }
 		    ]
 		}
 	]]></entry>
 	<!-- 
+		 20210106 lidong 代码调整适配一下，在原来基础上，增加对管家库到融合库版本的渗压、渗流的特殊处理，主要是数据字段有变化
+		 				 配置上没有什么差异，主要在tblAndPks需要写目标表的表表名以及主键字段名
+		 	      1、处理器里seepageflow由于还有其他的对接需要，所以触发器的tabid字段不能修改，还要用之前的，然后程序里手工改
+		 	      2、dam_rt_osmometer 由于本身就是从rsvr中独立出来的渗压数据，直接修改tabid到dam_rt_osmometer
+		 	      上面两个在tblAndPks里和mainQuery里会有不同的写法
+		 	      ** 目前在mysql这边的触发器里，拼写excinf的字符串，字段都用的小写
+		 	     
 		 sourceDbConfig: 源数据库配置
          targetDbConfig: 目标数据库配置
          tblAndPks:要同步的表和对应的主键信息,
@@ -73,7 +78,7 @@
          delDaysAgo:删除多少天以前的数据,
          rowsOnce: 一次同步多少条数据
          sendwaitQueryWhere: 检索哪些数据需要同步
-         mqServerAddr:"tcp://10.22.2.151:61616",任务执行信息的发送目标
+         mqServerAddr:'tcp://10.22.2.151:61616',任务执行信息的发送目标
          
          发送的数据到2675616时,用的删除数据会<2675616,永远剩一条数据,
          删除的数据永远比发送的小,除非未发送过,记录的slsh为空的时候,会按天数删除之前所有的
